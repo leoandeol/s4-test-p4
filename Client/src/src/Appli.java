@@ -1,3 +1,5 @@
+package src;
+
 import controller.Controller;
 import model.Messagerie;
 import view.Fenetre;

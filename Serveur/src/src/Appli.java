@@ -1,3 +1,4 @@
+package src;
 
 import view.*;
 import model.*;
