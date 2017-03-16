@@ -7,8 +7,8 @@ import org.junit.Test;
 public class TestFenetre {
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void testConstructeur() {
+		Fenetre f = new Fenetre();
 	}
 
 }
