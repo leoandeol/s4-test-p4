@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TestServer {
-
-	
+public class TestServer {	
 	/*
 	 * Sachant qu'il nous est impossible de créer des utilisateurs avec le code fourni
 	 * coté serveur. Les test sont écrits mais ne peuvent être testé. 
 	 * 
 	 */
 	private static Server s, s1;
-	private static Utilisateur u;
+	private static Utilisateur u, connected, remove;
 	
 	@BeforeClass
-	public void setUpBeforeClass() {
+	public static void setUpBeforeClass() {
 		s = new Server();
-		s1 = new Server();
+		connected = new Utilisateur("Connected");
+		remove = new Utilisateur("Remove");
+		s.addUser(remove);
+		s.addUser(connected);
 		u = new Utilisateur("Login");
 	}
 	
@@ -30,17 +31,40 @@ public class TestServer {
 		ArrayList<Utilisateur> a = new ArrayList<Utilisateur>();
 		assertTrue(s.getUtilisateurs().getClass() == a.getClass());
 	}
+	
+	@Test
+	public void testAddUserAlreadyConnected(){
+		s.addUser(u);
+		s.addUser(u);
+		int compteur = 0;
+		for(int i = 0; i < s.getUtilisateurs().size(); i++){
+			if(s.getUtilisateurs().get(i) == u)
+				compteur++;
+		}
+		//Si l'on accepte qu'un utiliateur se connecte plusieurs fois sur le serveur
+		//assertTrue(compteur > 1);
+		//Sinon
+		assertFalse(compteur > 1);
+	}
 	@Test
 	public void testGetUser(){
-		ArrayList<Utilisateur> a = new ArrayList<Utilisateur>();
-		a.add(u);
-		Utilisateur2 u2 = new Utilisateur("Login2");
-		a.add();
+		/*
+		 * Dans ce test, on vérifie que les utilisateurs ajoutés avec succès
+		 * Se retrouve bien dans l'ArrayList renvoyé par GetUser
+		 * La création d'un deuxième serveur s2 laisse apparaitre des problèmes lors du lancement du deuxième serveur
+		 * En effet, l'adresse ip du serveur est déja utilisé, il n'est pas possible de créer un socket vers cette même adresse
+		 * 
+		 */
 		Server s2 = new Server();
+		ArrayList<Utilisateur> a = new ArrayList<Utilisateur>();
+		Utilisateur u2 = new Utilisateur("Login2");
+		a.add(u);
+		a.add(u2);
+		
 		s2.addUser(u);
 		s2.addUser(u2);
-		for(int i = 0; i < a.size(); i++){
-			assertTrue(s.getUtilisateurs().get(i) == a.get(i));	
+		for(int i = 0; i < s2.getUtilisateurs().size(); i++){			
+			assertTrue(s2.getUtilisateurs().get(i) == a.get(i));	
 		}
 
 	}
@@ -62,29 +86,33 @@ public class TestServer {
 	}
 	@Test
 	public void testRemoveUser(){
-		s1.addUser(new Utilisateur());
-		s1.addUser(u);
-		s1.addUser(new Utilisateur());
 		
-		int size = s1.getUtilisateurs().size();
-		s1.removeUser(u);
+		int size = s.getUtilisateurs().size();
+		s.removeUser(remove);
+		//On verifie que la taille de l'array liste a bien diminué
+		assertTrue(size > s.getUtilisateurs().size());
 		
-		assertTrue(size > s1.getUtilisateurs().size());
-		
-		for(Utilisateur a : s1.getUtilisateurs()){
-			if(a == u){
-				assertTrue(false);
-			}
+		for(Utilisateur a : s.getUtilisateurs()){
+				assertFalse(a == remove);
 		}
+
+	}
+	@Test
+	public void testRemoveUserNotConnected(){
+		//On vérifie qu'il n'y a pas d'erreur lors du lancement 
+		//D'une tentative de suppression d'utilisateur n'étant pas connecté au serveur
+		s.removeUser(new Utilisateur("RemoveEmpty"));
 	}
 	
+	//Ces deux testes ne marcheront pas en créant des utilisateurs avec le constructeur passé en commentaire
+	//Parce que l'adresse IP n'est pas renseignée
 	@Test
 	public void testNotConnected(){
-		assertFalse(s.isConnected(u));
+		assertFalse(s.isConnected(new Utilisateur("NotConnected")));
 	}
+	@Test
 	public void testConnected(){
-		s.addUser(u);
-		assertTrue(s.isConnected(u));
+		assertTrue(s.isConnected(connected));
 	}
 
 	

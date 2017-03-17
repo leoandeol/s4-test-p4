@@ -2,6 +2,7 @@ package model;
 
 import static org.junit.Assert.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class TestUtilisateur {
@@ -31,19 +32,19 @@ public class TestUtilisateur {
 		assertTrue(u2.getLogin() == u.getLogin());
 		assertTrue(u2.getIpAdrr() == u.getIpAdrr());
 		assertTrue(u2.getPublicKey() == u.getPublicKey());
-		assertTrue(u2.getPrivateKey() == u.getPrivateKey());
+		assertTrue(u2.getPrivateKey() == null);
 	}
 	
 	@Test
 	public void testSetIpAdrr(){
 		u2.setIpAdrr("127.0.0.1");
-		assertTrue(u2.getIpAdrr().equals("123"));
+		assertTrue(u2.getIpAdrr().equals("127.0.0.1"));
 	}
 	@Test
 	public void testSetIncorrectIpAdrr(){
 		String prevIp = u2.getIpAdrr(); 
 		u2.setIpAdrr("bateau");
-		assertFalse(u2.getIpAdrr().equals(prevIp));
+		assertTrue(u2.getIpAdrr().equals(prevIp));
 		assertFalse(u2.getIpAdrr().equals("bateau"));
 	}
 	
