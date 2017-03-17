@@ -9,19 +9,9 @@ import view.Fenetre;
 
 public class TestControllerBarMenu {
 
-    Exception ex;
-
     @Test
     public void test() {
-        /*try {
-            Messagerie m = new Messagerie();
-            Fenetre f = new Fenetre(m);
-            ControllerBarMenu c = new ControllerBarMenu(m,f);
-            c.actionPerformed(new ActionEvent(new Object(),0,"leave"));
-        } catch (Exception e) {
-            ex = e;
-        }
-        assertEquals(null, ex);*/
+    	//Il est impossible de tester des méthodes lancé par le système telles que les méthodes invoquées lorsqu'un événement se produit.
     }
 
 }

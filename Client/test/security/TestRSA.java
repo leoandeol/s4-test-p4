@@ -1,14 +1,18 @@
 package security;
 
 import static org.junit.Assert.*;
+import javax.crypto.*;
+import java.security.*;
 
-import org.junit.Test;
+import org.junit.*;
+
 
 public class TestRSA {
 
-	@Test
-	public void test() {
-		fail("Not yet implemented");
-	}
+	private KeyPair key;
+	private Exception ex;
+	private String s = "salut !";
+	
+	
 
 }
