@@ -8,12 +8,22 @@ import org.junit.*;
 public class TestMessagerie {
 	
 	private Messagerie mess;
+	private Conversation c;
 	
 	@Before
 	public void initialize(){
+		c = new Conversation();
 		mess = new Messagerie();
 	}
 
+	@Test
+	public void testConstructeur(){
+		assertNotNull(mess.getConversations());
+		assertNotNull(mess.getDestinataires());
+		assertTrue(mess.getConversations().isEmpty());
+		assertTrue(mess.getDestinataires().isEmpty());
+	}
+	
 	@Test
 	public void testConnecTo(){
 		
@@ -26,15 +36,18 @@ public class TestMessagerie {
 	
 	@Test
 	public void testAddConversation() {
-		Conversation c = new Conversation();
 		mess.addConversation(c);
 		assertTrue(mess.getConversations().contains(c));
 	}
 	
 	@Test
-	public void testGetConversations(){
-		
+	public void testGetConversation(){
+		mess.addConversation(c);
+		ArrayList<Conversation> conv = new ArrayList<Conversation>();
+		conv.add(c);
+		assertEquals(mess.getConversations(), conv);
 	}
+	
 	
 	@Test
 	public void testGetDestinataires(){

@@ -5,37 +5,35 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
-public class TestUserListReceiver {
+public class TestMessageReceiver {
 
-	private UserListReceiver ulr;
-
+	private MessageReceiver mr;
+	
 	@Before
 	public void init(){
-		Messagerie m = new Messagerie();
 		ObjectInputStream in = null;
 		try {
 			in = new ObjectInputStream(System.in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ulr = new UserListReceiver(in, m);
+		Conversation c = new Conversation();
+		mr = new MessageReceiver(in, c);
 	}
-
+	
 	@Test
 	public void isRunning(){
 		Exception e = null;
 		try{
-			Thread t = new Thread(ulr);
-			t.start();
-			System.out.println("Is currently running");
+		Thread t = new Thread(mr);
+		t.start();
+		System.out.println("Is currently running");
 		} catch(Exception ex){
 			e = ex;
 		}
 		assertEquals(null, e);
 	}
-
 
 }
